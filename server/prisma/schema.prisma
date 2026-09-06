@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../ERD.svg"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DoctorScheduleDay {
+  mon
+  tue
+  wed
+  thu
+  fri
+  sat
+  sun
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  fullName     String
+  phone        String?
+  dateOfBirth  String?
+  gender       String?
+  address      String?
+  role         String        @default("PATIENT") // PATIENT, DOCTOR, ADMIN
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  doctorProfile DoctorProfile?
+  patientAppointments Appointment[] @relation("PatientAppointments")
+  reviews      Review[]
+}
+
+model Specialty {
+  id          String          @id @default(uuid())
+  name        String          @unique
+  description String?
+  icon        String?
+  image       String?
+  doctors     DoctorProfile[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model DoctorProfile {
+  id              String           @id @default(uuid())
+  userId          String           @unique
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  specialtyId     String
+  specialty       Specialty        @relation(fields: [specialtyId], references: [id])
+  title           String?          // BS. CKI, ThS. BS, TS. BS...
+  bio             String?
+  experienceYears Int              @default(5)
+  consultationFee Float            @default(300000)
+  hospitalAddress String?
+  ratingAvg       Float            @default(5.0)
+  totalReviews    Int              @default(0)
+
+  schedules       DoctorSchedule[]
+  blocks          ScheduleBlock[]
+  appointments    Appointment[]    @relation("DoctorAppointments")
+  reviews         Review[]
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model DoctorSchedule {
+  id                  String        @id @default(uuid())
+  doctorId            String
+  doctor              DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  dayOfWeek           DoctorScheduleDay
+  startTime           String        // "08:00"
+  endTime             String        // "17:00"
+  slotDurationMinutes Int           @default(30)
+  isAvailable         Boolean       @default(true) // mang cái này lên ScheduleBlock
+}
+
+model ScheduleBlock {
+  id        String        @id @default(uuid())
+  doctorId  String
+  doctor    DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  date      String        // "YYYY-MM-DD"
+  startTime String        // "09:00"
+  endTime   String        // "11:30"
+  reason    String?
+}
+
+model Appointment {
+  id              String            @id @default(uuid())
+  appointmentCode String            @unique
+  patientId       String
+  patient         User              @relation("PatientAppointments", fields: [patientId], references: [id])
+  doctorId        String
+  doctor          DoctorProfile     @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  specialtyId     String
+  date            DateTime          @db.Date
+  startTime       String
+  endTime         String
+  status          AppointmentStatus @default(PENDING)
+  patientNotes    String?
+  doctorNotes     String?
+  review          Review?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([doctorId, date])
+}
+
+model Review {
+  id            String        @id @default(uuid())
+  appointmentId String        @unique
+  appointment   Appointment   @relation(fields: [appointmentId], references: [id])
+  patientId     String
+  patient       User          @relation(fields: [patientId], references: [id])
+  doctorId      String
+  doctor        DoctorProfile @relation(fields: [doctorId], references: [id])
+  rating        Int           // 1 to 5
+  comment       String?
+  createdAt     DateTime      @default(now())
+}
