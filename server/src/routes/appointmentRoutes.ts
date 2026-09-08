@@ -7,8 +7,8 @@ import {
   updateAppointmentStatus,
   cancelAppointment
 } from '../controllers/appointmentController';
-import { authenticateToken, authorizeRoles } from '../middleware/auth';
-import { validate } from '../middleware/validate';
+import { authenticateToken, authorizeRoles } from '../middlewares/auth';
+import { validate } from '../middlewares/validate';
 import {
   adminAppointmentsQuerySchema,
   appointmentIdParamsSchema,

@@ -6,8 +6,8 @@ import {
   updateDoctor,
   deleteDoctor
 } from '../controllers/doctorController';
-import { authenticateToken, authorizeRoles } from '../middleware/auth';
-import { validate } from '../middleware/validate';
+import { authenticateToken, authorizeRoles } from '../middlewares/auth';
+import { validate } from '../middlewares/validate';
 import { createDoctorSchema, doctorParamsSchema, doctorQuerySchema, updateDoctorSchema } from '../schemas';
 
 const router = express.Router();

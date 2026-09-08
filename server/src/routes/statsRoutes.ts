@@ -1,9 +1,9 @@
 import express from 'express';
-import { getMyPatientProfile } from '../controllers/patientController';
+import { getDashboardStats } from '../controllers/statsController';
 import { authenticateToken, authorizeRoles } from '../middlewares/auth';
 
 const router = express.Router();
 
-router.get('/me', authenticateToken, authorizeRoles('PATIENT'), getMyPatientProfile);
+router.get('/dashboard', authenticateToken, authorizeRoles('ADMIN'), getDashboardStats);
 
 export default router;
