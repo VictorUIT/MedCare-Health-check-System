@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { idParamsSchema } from './commonSchemas';
 
+// Định nghĩa validation rules cho thông tin Bác sĩ
 const doctorFields = {
   fullName: yup.string().trim().min(2).required('Họ tên là bắt buộc'),
   phone: yup.string().trim().optional(),
@@ -13,17 +14,20 @@ const doctorFields = {
   hospitalAddress: yup.string().trim().max(500).optional()
 };
 
+// Định nghĩa schema cho việc tạo Bác sĩ
 export const createDoctorSchema = yup.object({
   email: yup.string().trim().email('Email không hợp lệ').required('Email là bắt buộc'),
   password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Mật khẩu là bắt buộc'),
   ...doctorFields
 });
 
+// Định nghĩa schema cho việc cập nhật thông tin Bác sĩ
 export const updateDoctorSchema = yup.object({
   ...doctorFields,
   specialtyId: yup.string().uuid('specialtyId không hợp lệ').optional()
 });
 
+// Định nghĩa schema cho việc lấy thông tin Bác sĩ theo ID
 export const doctorParamsSchema = idParamsSchema;
 export const doctorQuerySchema = yup.object({
   specialtyId: yup.string().uuid('specialtyId không hợp lệ').optional(),

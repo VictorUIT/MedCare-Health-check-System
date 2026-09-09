@@ -2,8 +2,10 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import prisma from '../services/doctorService';
 
+// 1. getDoctors — Lấy danh sách bác sĩ (Có bộ lọc & Tìm kiếm)
 export const getDoctors = async (req: Request, res: Response) => {
   try {
+    // Bóc tách các tham số query từ req.query
     const { specialtyId, search, minRating, maxFee } = req.query as {
       specialtyId?: string;
       search?: string;
@@ -11,20 +13,25 @@ export const getDoctors = async (req: Request, res: Response) => {
       maxFee?: string;
     };
 
+    // Tạo điều kiện lọc dựa trên các tham số query
     const where: any = {};
 
+    // Lọc theo chuyên khoa nếu có
     if (specialtyId) {
       where.specialtyId = specialtyId;
     }
 
+    // Lọc theo đánh giá trung bình nếu có
     if (minRating) {
       where.ratingAvg = { gte: parseFloat(minRating) };
     }
 
+    // Lọc theo mức phí tư vấn nếu có
     if (maxFee) {
       where.consultationFee = { lte: parseFloat(maxFee) };
     }
 
+    // Tìm kiếm theo tên, chuyên môn hoặc tiểu sử nếu có
     if (search) {
       where.OR = [
         { title: { contains: search } },
@@ -33,6 +40,7 @@ export const getDoctors = async (req: Request, res: Response) => {
       ];
     }
 
+    // Lấy danh sách bác sĩ từ cơ sở dữ liệu với các điều kiện lọc và sắp xếp theo đánh giá trung bình giảm dần
     const doctors = await prisma.doctorProfile.findMany({
       where,
       include: {
@@ -51,19 +59,27 @@ export const getDoctors = async (req: Request, res: Response) => {
   }
 };
 
+// 2. getDoctorById — Xem thông tin chi tiết của 1 Bác sĩ
 export const getDoctorById = async (req: Request, res: Response) => {
   try {
+    // Bóc tách id từ req.params
     const { id } = req.params;
 
+    // Tìm bác sĩ theo id và bao gồm thông tin user, specialty, schedules, blocks và reviews
     const doctor = await prisma.doctorProfile.findUnique({
       where: { id },
       include: {
+        // Tài khoản
         user: {
           select: { id: true, fullName: true, email: true, phone: true, gender: true }
         },
+        // Chuyên khoa
         specialty: true,
+        // Khung giờ làm việc
         schedules: true,
+        // Khung giờ bận/khóa
         blocks: true,
+        // Tối đa 20 đánh giá mới nhất từ bệnh nhân
         reviews: {
           include: {
             patient: {
@@ -86,8 +102,10 @@ export const getDoctorById = async (req: Request, res: Response) => {
   }
 };
 
+// 3. createDoctor — Tạo tài khoản & Hồ sơ Bác sĩ (Admin)
 export const createDoctor = async (req: Request, res: Response) => {
   try {
+    // Bóc tách dữ liệu từ req.body
     const {
       email,
       password,
@@ -106,13 +124,16 @@ export const createDoctor = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Vui lòng nhập đủ thông tin bắt buộc: email, password, fullName, specialtyId' });
     }
 
+    // Kiểm tra xem email đã tồn tại chưa
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: 'Email này đã tồn tại trên hệ thống' });
     }
 
+    // Hash mật khẩu trước khi lưu vào cơ sở dữ liệu
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Sử dụng transaction để tạo user, doctorProfile và default schedules cùng lúc
     const result = await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {
@@ -125,6 +146,7 @@ export const createDoctor = async (req: Request, res: Response) => {
         }
       });
 
+      // Tạo hồ sơ bác sĩ
       const doctorProfile = await tx.doctorProfile.create({
         data: {
           userId: user.id,
@@ -141,6 +163,7 @@ export const createDoctor = async (req: Request, res: Response) => {
         }
       });
 
+      // Tạo lịch mặc định cho bác sĩ (Thứ 2 đến Thứ 6, từ 8:00 đến 17:00, mỗi slot 30 phút)
       const defaultSchedules = (['mon', 'tue', 'wed', 'thu', 'fri'] as const).map((dayOfWeek) => ({
         doctorId: doctorProfile.id,
         dayOfWeek,
@@ -163,8 +186,10 @@ export const createDoctor = async (req: Request, res: Response) => {
   }
 };
 
+// 4. updateDoctor — Cập nhật thông tin & Hồ sơ Bác sĩ (Admin)
 export const updateDoctor = async (req: Request, res: Response) => {
   try {
+    // Bóc tách dữ liệu từ req.params và req.body
     const { id } = req.params;
     const {
       fullName,
@@ -178,6 +203,7 @@ export const updateDoctor = async (req: Request, res: Response) => {
       hospitalAddress
     } = req.body;
 
+    // Kiểm tra xem bác sĩ có tồn tại không
     const doctor = await prisma.doctorProfile.findUnique({
       where: { id },
       include: { user: true }
@@ -187,6 +213,7 @@ export const updateDoctor = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Không tìm thấy thông tin bác sĩ' });
     }
 
+    // Sử dụng transaction để cập nhật thông tin user và doctorProfile cùng lúc
     const updatedDoctor = await prisma.$transaction(async (tx) => {
       await tx.user.update({
         where: { id: doctor.userId },
@@ -216,15 +243,19 @@ export const updateDoctor = async (req: Request, res: Response) => {
   }
 };
 
+// 5. deleteDoctor — Xóa tài khoản & Hồ sơ Bác sĩ (Admin)
 export const deleteDoctor = async (req: Request, res: Response) => {
   try {
+    // Tìm bác sĩ theo id để lấy userId
     const { id } = req.params;
 
+    // Kiểm tra xem bác sĩ có tồn tại không
     const doctor = await prisma.doctorProfile.findUnique({ where: { id } });
     if (!doctor) {
       return res.status(404).json({ message: 'Không tìm thấy bác sĩ' });
     }
 
+    // Xóa hồ sơ bác sĩ
     await prisma.user.delete({ where: { id: doctor.userId } });
 
     return res.json({ message: 'Xóa tài khoản bác sĩ thành công' });

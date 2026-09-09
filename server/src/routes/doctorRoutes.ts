@@ -10,6 +10,7 @@ import { authenticateToken, authorizeRoles } from '../middlewares/auth';
 import { validate } from '../middlewares/validate';
 import { createDoctorSchema, doctorParamsSchema, doctorQuerySchema, updateDoctorSchema } from '../schemas';
 
+// Tạo router cho các endpoint liên quan đến bác sĩ
 const router = express.Router();
 
 router.get('/', validate(doctorQuerySchema, 'query'), getDoctors);

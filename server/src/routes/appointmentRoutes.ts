@@ -19,6 +19,7 @@ import {
   updateAppointmentStatusSchema
 } from '../schemas';
 
+// Định nghĩa các route cho quản lý lịch hẹn
 const router = express.Router();
 
 router.post('/', authenticateToken, validate(createAppointmentSchema), createAppointment);

@@ -8,6 +8,7 @@ import {
   updateSpecialtyRecord
 } from '../services/specialtyService';
 
+// 1. getSpecialties — Lấy danh sách tất cả Chuyên khoa
 export const getSpecialties = async (req: Request, res: Response) => {
   try {
     const specialties = await listSpecialties();
@@ -17,6 +18,7 @@ export const getSpecialties = async (req: Request, res: Response) => {
   }
 };
 
+// 2. getSpecialtyById — Xem chi tiết 1 Chuyên khoa
 export const getSpecialtyById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -32,6 +34,7 @@ export const getSpecialtyById = async (req: Request, res: Response) => {
   }
 };
 
+// 3. createSpecialty — Tạo Chuyên khoa mới (Admin)
 export const createSpecialty = async (req: Request, res: Response) => {
   try {
     const { name, description, icon, image } = req.body;
@@ -53,6 +56,7 @@ export const createSpecialty = async (req: Request, res: Response) => {
   }
 };
 
+// 4. updateSpecialty — Cập nhật Chuyên khoa
 export const updateSpecialty = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -66,6 +70,7 @@ export const updateSpecialty = async (req: Request, res: Response) => {
   }
 };
 
+// 5. deleteSpecialty — Xóa Chuyên khoa
 export const deleteSpecialty = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

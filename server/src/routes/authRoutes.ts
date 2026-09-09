@@ -4,6 +4,7 @@ import { authenticateToken } from '../middlewares/auth';
 import { validate } from '../middlewares/validate';
 import { loginSchema, registerSchema, updateProfileSchema } from '../schemas';
 
+// 1. Tạo router cho các endpoint liên quan đến xác thực người dùng
 const router = express.Router();
 
 router.post('/register', validate(registerSchema), register);

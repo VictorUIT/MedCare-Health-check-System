@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import prisma from '../services/aiService';
 
+// 1. Khai báo Dữ liệu & Hằng số (Constants)
 const MEDICAL_RULES = [
   {
     specialtyName: 'Nội khoa',
@@ -42,10 +43,12 @@ const MEDICAL_RULES = [
 
 const DISCLAIMER_TEXT = '⚠️ LƯU Ý Y KHOA QUAN TRỌNG: Kết quả gợi ý từ AI chỉ mang tính chất tham khảo dựa trên mô tả triệu chứng ban đầu của bạn và KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA CHÍNH THỨC. Vui lòng chọn bác sĩ chuyên khoa phù hợp để thăm khám trực tiếp hoặc liên hệ cấp cứu 115 trong trường hợp khẩn cấp.';
 
+// 2. Luồng xử lý chính trong suggestSpecialty
 export const suggestSpecialty = async (req: Request, res: Response) => {
   try {
     const { symptoms } = req.body;
 
+    // Bước 1: Validate đầu vào
     if (!symptoms || symptoms.trim().length < 5) {
       return res.status(400).json({ message: 'Vui lòng nhập chi tiết triệu chứng của bạn (tối thiểu 5 ký tự)' });
     }
@@ -54,6 +57,7 @@ export const suggestSpecialty = async (req: Request, res: Response) => {
     let suggestedSpecialtyNames: string[] = [];
     let reasoning = '';
 
+    // Bước 2: Chiến lược 1 — Phân tích bằng Google Gemini AI (Ưu tiên)
     if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '') {
       try {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -82,6 +86,7 @@ Trả về định dạng JSON thuần như sau:
       }
     }
 
+    // Bước 3: Chiến lược 2 — Phân tích bằng Rule-based NLP (Dự phòng / Fallback)
     if (suggestedSpecialtyNames.length === 0) {
       const matches: any[] = [];
 
@@ -118,6 +123,7 @@ Trả về định dạng JSON thuần như sau:
       }
     }
 
+    // Bước 4: Truy vấn CSDL Prisma để lấy thông tin bác sĩ theo chuyên khoa gợi ý
     const specialties = await prisma.specialty.findMany({
       where: {
         name: { in: suggestedSpecialtyNames }

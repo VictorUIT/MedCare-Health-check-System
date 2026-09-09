@@ -11,6 +11,7 @@ import { validate } from '../middlewares/validate';
 import { idParamsSchema } from '../schemas/commonSchemas';
 import { specialtySchema, updateSpecialtySchema } from '../schemas/specialtySchemas';
 
+// Tạo router cho các endpoint liên quan đến chuyên khoa
 const router = express.Router();
 
 router.get('/', getSpecialties);

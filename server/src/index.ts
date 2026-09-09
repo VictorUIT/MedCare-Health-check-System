@@ -43,6 +43,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: 'Lỗi hệ thống nội bộ', error: err.message });
 });
 
+// Start the server
 app.listen(PORT, () => {
   console.log(`🚀 MedCare TypeScript Server listening on http://localhost:${PORT}`);
 });

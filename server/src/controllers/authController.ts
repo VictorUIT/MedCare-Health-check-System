@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { AuthRequest } from '../middlewares/auth';
 import { getUserById, loginUser, registerUser, updateUserProfile } from '../services/authService';
 
+// 1. register — Đăng ký tài khoản người dùng
 export const register = async (req: Request, res: Response) => {
   try {
     const { email, password, fullName, phone, dateOfBirth, gender, address } = req.body;
@@ -26,6 +27,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+// 2. login — Đăng nhập hệ thống
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -50,6 +52,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+// 3. getMe — Lấy thông tin tài khoản đang đăng nhập
 export const getMe = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user) {
@@ -68,14 +71,18 @@ export const getMe = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// 4. updateProfile — Cập nhật hồ sơ cá nhân
 export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
+    // Xác thực: Kiểm tra đăng nhập qua req.user
     if (!req.user) {
       return res.status(401).json({ message: 'Chưa đăng nhập' });
     }
 
+    // Bóc tách dữ liệu: Lấy các trường thông tin có thể chỉnh sửa
     const { fullName, phone, dateOfBirth, gender, address } = req.body;
 
+    // Gọi Service để cập nhật hồ sơ người dùng
     const userData = await updateUserProfile(req.user.id, { fullName, phone, dateOfBirth, gender, address });
     return res.json({
       message: 'Cập nhật thông tin cá nhân thành công',

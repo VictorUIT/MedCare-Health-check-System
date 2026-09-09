@@ -1,16 +1,20 @@
+// Xử lý Lịch làm việc của Bác sĩ và Tự động chia Ca/Khung giờ khám (Time Slots)
 export const doctorScheduleDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
 export type DoctorScheduleDay = typeof doctorScheduleDays[number];
 
+// Lấy ngày trong tuần từ chuỗi hoặc trả về null nếu không hợp lệ
 export const getDoctorScheduleDay = (dayOfWeek: unknown): DoctorScheduleDay | null => {
   return typeof dayOfWeek === 'string' && doctorScheduleDays.includes(dayOfWeek as DoctorScheduleDay)
     ? dayOfWeek as DoctorScheduleDay
     : null;
 };
 
+// Lấy ngày trong tuần từ một đối tượng Date
 export const getDoctorScheduleDayFromDate = (date: Date): DoctorScheduleDay => {
   return (['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const)[date.getUTCDay()];
 };
 
+// Tự động chia Khung giờ khám
 export const generateTimeSlots = (startTime: string, endTime: string, durationMinutes = 30): string[] => {
   const slots: string[] = [];
   const [currentHour, currentMinute] = startTime.split(':').map(Number);

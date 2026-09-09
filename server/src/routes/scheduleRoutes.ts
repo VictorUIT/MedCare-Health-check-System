@@ -9,6 +9,7 @@ import { authenticateToken, authorizeRoles } from '../middlewares/auth';
 import { validate } from '../middlewares/validate';
 import { availableSlotsParamsSchema, dateQuerySchema, scheduleBlockParamsSchema, scheduleBlockSchema, setDoctorSchedulesSchema } from '../schemas';
 
+// Tạo router cho các endpoint liên quan đến lịch trình của bác sĩ
 const router = express.Router();
 
 router.get('/available/:doctorId', validate(availableSlotsParamsSchema, 'params'), validate(dateQuerySchema, 'query'), getAvailableSlots);
