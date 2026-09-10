@@ -4,12 +4,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
+// Key để lưu trạng thái đã hiển thị prompt trong sessionStorage
 const promptSessionKey = 'medcare_patient_profile_prompt_seen';
 
+//  Hàm kiểm tra xem thông tin bệnh nhân có thiếu hay không
 const hasMissingPatientInfo = (user: { phone?: string; dateOfBirth?: string; gender?: string; address?: string }) => {
   return !user.phone || !user.dateOfBirth || !user.gender || !user.address;
 };
 
+//  
 export default function PatientProfilePrompt() {
   const { user, loading, register, updateProfileState } = useAuth();
   const location = useLocation();
@@ -24,6 +27,7 @@ export default function PatientProfilePrompt() {
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
 
+  // useEffect để kiểm tra điều kiện hiển thị prompt khi component được mount hoặc khi user/loading/location thay đổi
   useEffect(() => {
     const isHomePage = location.pathname === '/';
     const shouldPromptSignedInPatient = user?.role === 'PATIENT' && hasMissingPatientInfo(user);
@@ -51,6 +55,7 @@ export default function PatientProfilePrompt() {
     setError('');
   };
 
+  // Hàm xử lý submit form, gửi dữ liệu đến server để lưu thông tin bệnh nhân
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setSaving(true);

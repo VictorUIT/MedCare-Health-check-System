@@ -3,6 +3,32 @@ import prisma from '../services/scheduleService';
 import { AuthRequest } from '../middlewares/auth';
 import { generateTimeSlots, getDoctorScheduleDay, getDoctorScheduleDayFromDate } from '../utils';
 
+export const getDoctorScheduleDetails = async (req: Request, res: Response) => {
+  try {
+    const { doctorId } = req.params;
+    const doctor = await prisma.doctorProfile.findUnique({
+      where: { id: doctorId },
+      include: {
+        user: { select: { fullName: true } },
+        schedules: { orderBy: { id: 'asc' } },
+        blocks: { orderBy: [{ date: 'asc' }, { startTime: 'asc' }] }
+      }
+    });
+
+    if (!doctor) {
+      return res.status(404).json({ message: 'Không tìm thấy bác sĩ' });
+    }
+
+    return res.json({
+      doctor: { id: doctor.id, fullName: doctor.user.fullName },
+      schedules: doctor.schedules,
+      blocks: doctor.blocks
+    });
+  } catch (error: any) {
+    return res.status(500).json({ message: 'Lỗi khi lấy lịch làm việc của bác sĩ', error: error.message });
+  }
+};
+
 // 1. Cài đặt Lịch làm việc cố định theo tuần
 export const setDoctorSchedules = async (req: AuthRequest, res: Response) => {
   try {

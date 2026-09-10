@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  getDoctorScheduleDetails,
   setDoctorSchedules,
   addScheduleBlock,
   deleteScheduleBlock,
@@ -12,6 +13,7 @@ import { availableSlotsParamsSchema, dateQuerySchema, scheduleBlockParamsSchema,
 // Tạo router cho các endpoint liên quan đến lịch trình của bác sĩ
 const router = express.Router();
 
+router.get('/doctor/:doctorId', authenticateToken, authorizeRoles('ADMIN'), validate(availableSlotsParamsSchema, 'params'), getDoctorScheduleDetails);
 router.get('/available/:doctorId', validate(availableSlotsParamsSchema, 'params'), validate(dateQuerySchema, 'query'), getAvailableSlots);
 router.post('/set-hours', authenticateToken, authorizeRoles('DOCTOR', 'ADMIN'), validate(setDoctorSchedulesSchema), setDoctorSchedules);
 router.post('/blocks', authenticateToken, authorizeRoles('DOCTOR', 'ADMIN'), validate(scheduleBlockSchema), addScheduleBlock);
