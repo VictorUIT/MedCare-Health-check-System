@@ -1,6 +1,6 @@
 # 🏥 MedCare-Online Medical Appointment Booking System
 
-Hệ thống quản lý và đặt lịch khám bệnh thông minh (MedCare Health-check System) được xây dựng theo kiến trúc Client-Server, hỗ trợ bệnh nhân đặt lịch khám, bác sĩ quản lý lịch hẹn và hệ thống tích hợp các tính năng AI hỗ trợ tư vấn.
+Hệ thống quản lý và đặt lịch khám bệnh thông minh (MedCare-Online Medical Appointment Booking System) được xây dựng theo kiến trúc Client-Server, hỗ trợ bệnh nhân đặt lịch khám, bác sĩ quản lý lịch hẹn và hệ thống tích hợp các tính năng AI hỗ trợ tư vấn.
 
 ---
 
@@ -26,7 +26,7 @@ Hệ thống quản lý và đặt lịch khám bệnh thông minh (MedCare Heal
 ## 📁 Cấu trúc dự án (Project Structure)
 
 ```text
-MedCare-Health-check-System/
+MedCare-Online-Medical-Appointment-Booking-System/
 ├── client/                   # Frontend React Application
 │   ├── src/
 │   │   ├── components/       # Reusable UI Components
