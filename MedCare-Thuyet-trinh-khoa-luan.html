@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>MedCare | Thuyết trình khóa luận</title>
+<style>
+@page { size: A4 landscape; margin: 0; }
+:root { --ink:#10243e; --muted:#60738b; --teal:#0f766e; --cyan:#0891b2; --sky:#e0f2fe; --mint:#ccfbf1; --gold:#f59e0b; --rose:#f43f5e; --paper:#f7fafc; }
+* { box-sizing:border-box; }
+body { margin:0; background:#dbe5ec; color:var(--ink); font-family: "Segoe UI", Arial, sans-serif; }
+.page { width:297mm; height:210mm; position:relative; overflow:hidden; page-break-after:always; padding:18mm 20mm; background:var(--paper); }
+.page:last-child { page-break-after:auto; }
+.page:before { content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(224,242,254,.75),transparent 42%), radial-gradient(circle at 96% 4%,rgba(20,184,166,.12),transparent 26%); pointer-events:none; }
+.page > * { position:relative; z-index:1; }
+.kicker { color:var(--teal); font-size:11px; font-weight:800; letter-spacing:2.2px; text-transform:uppercase; }
+h1 { font-size:42px; line-height:1.05; margin:12px 0; letter-spacing:-1px; }
+h2 { font-size:28px; margin:7px 0 18px; letter-spacing:-.4px; }
+h3 { font-size:16px; margin:0 0 7px; }
+p { font-size:13px; line-height:1.55; margin:6px 0; color:var(--muted); }
+.lead { font-size:18px; line-height:1.45; max-width:700px; color:#36536e; }
+.footer { position:absolute; bottom:10mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:10px; color:#8091a4; border-top:1px solid #d7e2eb; padding-top:5px; }
+.badge { display:inline-block; padding:6px 10px; border-radius:999px; background:var(--mint); color:var(--teal); font-size:11px; font-weight:800; }
+.grid { display:grid; gap:14px; }
+.grid-2 { grid-template-columns:1fr 1fr; }
+.grid-3 { grid-template-columns:repeat(3,1fr); }
+.grid-4 { grid-template-columns:repeat(4,1fr); }
+.card { background:white; border:1px solid #dbe6ee; border-radius:15px; padding:16px; box-shadow:0 8px 20px rgba(27,65,89,.07); }
+.card strong { color:var(--ink); }
+.icon { width:38px; height:38px; border-radius:12px; background:var(--sky); display:flex; align-items:center; justify-content:center; color:var(--cyan); font-size:19px; margin-bottom:10px; }
+.metric { border-left:4px solid var(--teal); padding:12px 15px; background:white; border-radius:10px; }
+.metric b { display:block; font-size:25px; color:var(--teal); }
+.metric span { color:var(--muted); font-size:11px; }
+.timeline { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:26px; }
+.step { position:relative; padding:14px; min-height:105px; background:white; border-radius:13px; border-top:4px solid var(--cyan); }
+.step:after { content:"→"; position:absolute; right:-15px; top:36px; font-size:23px; color:var(--teal); }
+.step:last-child:after { display:none; }
+.step b { display:block; font-size:12px; margin-bottom:7px; }
+.step p { font-size:11px; }
+.arch { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:26px; }
+.arch .node { flex:1; min-height:110px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; border-radius:15px; padding:15px; background:white; border:2px solid #b7e4e0; box-shadow:0 8px 18px rgba(15,118,110,.09); }
+.arch .arrow { font-size:25px; color:var(--teal); }
+.arch small { color:var(--muted); font-size:10px; margin-top:5px; }
+.pillrow { display:flex; flex-wrap:wrap; gap:8px; margin-top:13px; }
+.pill { padding:8px 11px; border-radius:9px; font-size:11px; font-weight:700; background:#eef6fa; color:#315b74; }
+.table { width:100%; border-collapse:collapse; background:white; border-radius:12px; overflow:hidden; font-size:11px; }
+.table th { background:#e6f5f4; color:var(--teal); text-align:left; padding:10px; }
+.table td { padding:9px 10px; border-bottom:1px solid #edf2f5; color:#536a80; }
+.code { background:#10243e; color:#c9f7ed; border-radius:13px; padding:16px; font-family:Consolas,monospace; font-size:11px; line-height:1.7; }
+.quote { border-left:5px solid var(--gold); background:#fff8e7; padding:15px 19px; border-radius:0 12px 12px 0; color:#6e561e; font-size:15px; line-height:1.5; }
+.cover { display:flex; height:100%; align-items:center; gap:32px; }
+.cover .copy { flex:1.3; }
+.cover .visual { flex:1; height:122mm; border-radius:30px; background:linear-gradient(145deg,#0f766e,#075985); padding:22px; color:white; position:relative; box-shadow:20px 20px 0 rgba(8,145,178,.16); }
+.cover .visual:before { content:""; position:absolute; width:160px; height:160px; border-radius:50%; right:18px; top:24px; background:rgba(255,255,255,.1); }
+.cover .visual:after { content:""; position:absolute; width:230px; height:230px; border:1px solid rgba(255,255,255,.2); border-radius:50%; right:-70px; bottom:-90px; }
+.phone { position:absolute; z-index:2; left:35px; top:35px; width:180px; height:310px; border:7px solid #d8f7f1; border-radius:27px; background:#f9ffff; color:var(--ink); padding:17px 12px; box-shadow:0 15px 30px rgba(0,0,0,.2); }
+.phone .bar { height:9px; width:70px; background:#b6d9d8; border-radius:5px; margin:0 auto 18px; }
+.phone .screenline { height:12px; background:#d5edeb; border-radius:5px; margin:9px 0; }
+.phone .screenline.short { width:58%; }
+.phone .screenbox { height:80px; border-radius:12px; background:linear-gradient(135deg,#dff7f2,#cbe9fa); margin-top:15px; }
+.number { font-size:11px; font-weight:800; color:var(--teal); }
+.callout { padding:15px; background:linear-gradient(135deg,#effdf9,#edf8ff); border-radius:15px; border:1px solid #c9ebe5; }
+.checklist { list-style:none; padding:0; margin:0; }
+.checklist li { margin:9px 0; padding-left:23px; position:relative; font-size:13px; color:#536a80; }
+.checklist li:before { content:"✓"; position:absolute; left:0; color:var(--teal); font-weight:900; }
+</style>
+</head>
+<body>
+<section class="page">
+  <div class="cover">
+    <div class="copy">
+      <span class="badge">KHÓA LUẬN TỐT NGHIỆP · 2026</span>
+      <h1>MedCare</h1>
+      <h2>Hệ thống đặt lịch khám bệnh trực tuyến</h2>
+      <p class="lead">Một nền tảng kết nối bệnh nhân, bác sĩ và phòng khám trong một quy trình đặt lịch minh bạch, thuận tiện và có hỗ trợ gợi ý chuyên khoa bằng AI.</p>
+      <div class="pillrow"><span class="pill">React + TypeScript</span><span class="pill">Node.js + Express</span><span class="pill">PostgreSQL + Prisma</span></div>
+      <p style="margin-top:32px;color:#49657e"><strong>Sinh viên thực hiện:</strong> ........................................<br><strong>Giảng viên hướng dẫn:</strong> ........................................</p>
+    </div>
+    <div class="visual"><div class="phone"><div class="bar"></div><b style="font-size:14px">Xin chào, Minh</b><div class="screenline"></div><div class="screenline short"></div><div class="screenbox"></div><div class="screenline"></div><div class="screenline short"></div></div><div style="position:absolute;right:25px;bottom:24px;width:130px;font-weight:800;font-size:16px;line-height:1.3">Care that starts with a better flow.</div></div>
+  </div>
+  <div class="footer"><span>MEDCARE · THUYẾT TRÌNH KHÓA LUẬN</span><span>01 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">01 · Bối cảnh</span><h2>Bài toán thực tế và động lực xây dựng</h2>
+  <div class="grid grid-2" style="margin-top:22px">
+    <div class="card"><div class="icon">!</div><h3>Những điểm nghẽn hiện tại</h3><ul class="checklist"><li>Đặt lịch qua điện thoại dễ sai ngày, sai giờ hoặc bỏ sót yêu cầu.</li><li>Bệnh nhân khó biết bác sĩ nào phù hợp với triệu chứng ban đầu.</li><li>Bác sĩ và lễ tân thiếu một nơi thống nhất để quản lý lịch.</li><li>Thông tin lịch bận, lịch làm việc và lịch hẹn bị phân tán.</li></ul></div>
+    <div class="card"><div class="icon">↗</div><h3>Cơ hội cải tiến</h3><p>Chuyển quy trình đặt lịch sang nền tảng số giúp người dùng tự phục vụ, giảm thao tác thủ công và tạo dữ liệu tập trung để phòng khám vận hành hiệu quả hơn.</p><div class="quote" style="margin-top:18px">“Đúng bác sĩ · đúng khung giờ · đúng thông tin”</div></div>
+  </div>
+  <div class="grid grid-4" style="margin-top:20px"><div class="metric"><b>3</b><span>nhóm người dùng chính</span></div><div class="metric"><b>1</b><span>quy trình đặt lịch thống nhất</span></div><div class="metric"><b>24/7</b><span>khả năng tra cứu và đăng ký</span></div><div class="metric"><b>AI</b><span>gợi ý chuyên khoa ban đầu</span></div></div>
+  <div class="footer"><span>Vấn đề cần giải quyết</span><span>02 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">02 · Mục tiêu</span><h2>Định hướng sản phẩm và phạm vi đề tài</h2>
+  <div class="grid grid-3" style="margin-top:26px">
+    <div class="card"><div class="icon">01</div><h3>Đơn giản hóa đặt lịch</h3><p>Cho phép bệnh nhân tìm bác sĩ, xem chuyên khoa, chọn ngày và khung giờ còn trống trong vài bước.</p></div>
+    <div class="card"><div class="icon">02</div><h3>Tập trung vận hành</h3><p>Cung cấp dashboard cho bác sĩ và admin để xác nhận, hoàn tất, hủy lịch và theo dõi dữ liệu.</p></div>
+    <div class="card"><div class="icon">03</div><h3>Cá nhân hóa trải nghiệm</h3><p>Hồ sơ bệnh nhân, lịch sử lịch hẹn, đánh giá và gợi ý AI giúp hành trình được liền mạch hơn.</p></div>
+  </div>
+  <div class="callout" style="margin-top:23px"><h3>Phạm vi triển khai</h3><div class="pillrow"><span class="pill">Quản lý tài khoản & phân quyền</span><span class="pill">Danh mục chuyên khoa</span><span class="pill">Hồ sơ bác sĩ</span><span class="pill">Lịch làm việc & lịch bận</span><span class="pill">Đặt lịch & trạng thái</span><span class="pill">Đánh giá bác sĩ</span><span class="pill">AI gợi ý chuyên khoa</span></div></div>
+  <div class="footer"><span>Mục tiêu và phạm vi</span><span>03 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">03 · Người dùng</span><h2>Ba vai trò, một trải nghiệm liên kết</h2>
+  <div class="grid grid-3" style="margin-top:22px">
+    <div class="card" style="border-top:5px solid #0ea5e9"><div class="icon">P</div><h3>Bệnh nhân</h3><p>Tìm bác sĩ, xem lịch trống, đặt/hủy lịch, theo dõi trạng thái và gửi đánh giá sau khi khám.</p><div class="pillrow"><span class="pill">Hồ sơ</span><span class="pill">Đặt lịch</span><span class="pill">Lịch sử</span></div></div>
+    <div class="card" style="border-top:5px solid #14b8a6"><div class="icon">D</div><h3>Bác sĩ</h3><p>Thiết lập lịch tuần, chặn khung giờ bận, xem lịch làm việc và cập nhật trạng thái cuộc hẹn.</p><div class="pillrow"><span class="pill">Lịch tuần</span><span class="pill">Lịch bận</span><span class="pill">Ghi chú</span></div></div>
+    <div class="card" style="border-top:5px solid #f59e0b"><div class="icon">A</div><h3>Quản trị viên</h3><p>Quản lý bác sĩ, chuyên khoa, toàn bộ lịch hẹn, thống kê dashboard và kiểm tra lịch vận hành.</p><div class="pillrow"><span class="pill">Dashboard</span><span class="pill">Quản lý</span><span class="pill">Thống kê</span></div></div>
+  </div>
+  <h3 style="margin-top:28px">Luồng trải nghiệm chính của bệnh nhân</h3>
+  <div class="timeline"><div class="step"><b>01 · Khám phá</b><p>Vào hệ thống, hoàn thiện hồ sơ hoặc đăng ký tài khoản.</p></div><div class="step"><b>02 · Định hướng</b><p>Mô tả triệu chứng để nhận gợi ý chuyên khoa.</p></div><div class="step"><b>03 · Lựa chọn</b><p>Chọn bác sĩ và khung giờ hợp lệ.</p></div><div class="step"><b>04 · Theo dõi</b><p>Nhận trạng thái, đi khám và đánh giá.</p></div></div>
+  <div class="footer"><span>Đối tượng sử dụng và workflow</span><span>04 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">04 · Kiến trúc</span><h2>Kiến trúc hệ thống và công nghệ</h2>
+  <div class="arch"><div class="node"><b>Client</b><small>React · Vite · TypeScript<br>Tailwind CSS · Axios</small></div><div class="arrow">→</div><div class="node"><b>REST API</b><small>Node.js · Express<br>JWT · Yup validation</small></div><div class="arrow">→</div><div class="node"><b>Service layer</b><small>Auth · Appointment<br>Schedule · AI · Stats</small></div><div class="arrow">→</div><div class="node"><b>Database</b><small>PostgreSQL<br>Prisma ORM</small></div></div>
+  <div class="grid grid-2" style="margin-top:28px"><div class="card"><h3>Nguyên tắc thiết kế</h3><ul class="checklist"><li>Phân tách frontend, API và nghiệp vụ theo module.</li><li>Validation tập trung ở middleware trước controller.</li><li>JWT xác thực và role-based authorization.</li><li>Transaction bảo đảm cập nhật dữ liệu nhất quán.</li></ul></div><div class="code">POST /api/v1/appointments<br>{<br>&nbsp;&nbsp;doctorId, date,<br>&nbsp;&nbsp;startTime, endTime,<br>&nbsp;&nbsp;patientNotes<br>}<br><br>→ PENDING<br>→ CONFIRMED<br>→ COMPLETED</div></div>
+  <div class="footer"><span>Kiến trúc kỹ thuật</span><span>05 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">05 · Chức năng cốt lõi</span><h2>Từ tìm kiếm đến một cuộc hẹn hoàn chỉnh</h2>
+  <table class="table" style="margin-top:20px"><thead><tr><th>Giai đoạn</th><th>Chức năng</th><th>Giá trị mang lại</th></tr></thead><tbody><tr><td>Khám phá</td><td>Danh sách bác sĩ, bộ lọc chuyên khoa, rating, mức phí</td><td>Rút ngắn thời gian tìm kiếm</td></tr><tr><td>Kiểm tra</td><td>Lịch tuần, slot trống, slot đã đặt, khung giờ bị chặn</td><td>Giảm đặt trùng và minh bạch lịch</td></tr><tr><td>Đặt lịch</td><td>Chọn ngày/giờ, ghi chú bệnh nhân, mã lịch hẹn</td><td>Chuẩn hóa thông tin đầu vào</td></tr><tr><td>Điều phối</td><td>Bác sĩ/admin xác nhận, hoàn tất hoặc hủy lịch</td><td>Quản lý trạng thái rõ ràng</td></tr><tr><td>Sau khám</td><td>Đánh giá 1–5 sao và nhận xét</td><td>Tạo phản hồi cải thiện chất lượng</td></tr></tbody></table>
+  <div class="grid grid-3" style="margin-top:24px"><div class="callout"><h3>Chống đặt trùng</h3><p>Slot có lịch PENDING, CONFIRMED hoặc COMPLETED sẽ không còn khả dụng.</p></div><div class="callout"><h3>Chuyển trạng thái</h3><p>Luồng trạng thái được kiểm soát theo các chuyển tiếp hợp lệ.</p></div><div class="callout"><h3>Hủy có điều kiện</h3><p>Bệnh nhân chỉ hủy trước giờ khám tối thiểu 2 tiếng.</p></div></div>
+  <div class="footer"><span>Nghiệp vụ đặt lịch</span><span>06 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">06 · AI hỗ trợ</span><h2>Gợi ý chuyên khoa từ mô tả triệu chứng</h2>
+  <div class="grid grid-2" style="margin-top:24px;align-items:stretch"><div class="card"><span class="badge">AI ASSISTED · NOT DIAGNOSIS</span><h3 style="margin-top:16px">Cách hoạt động</h3><div class="timeline" style="display:block;margin-top:12px"><div class="step" style="margin-bottom:9px;min-height:auto;border-top:0;border-left:4px solid var(--cyan)"><b>01 · Nhập triệu chứng</b><p>Người dùng mô tả tình trạng bằng ngôn ngữ tự nhiên.</p></div><div class="step" style="margin-bottom:9px;min-height:auto;border-top:0;border-left:4px solid var(--teal)"><b>02 · Phân tích</b><p>Gemini được ưu tiên; rule-based NLP là phương án dự phòng.</p></div><div class="step" style="min-height:auto;border-top:0;border-left:4px solid var(--gold)"><b>03 · Gợi ý</b><p>Trả về 1–2 chuyên khoa và các bác sĩ phù hợp.</p></div></div></div><div class="card"><h3>Ví dụ trải nghiệm</h3><div class="quote" style="margin-top:15px">“Tôi bị đau đầu, chóng mặt và mất ngủ nhiều ngày.”</div><p style="margin-top:18px"><strong>Gợi ý:</strong> Thần kinh · Tâm lý</p><p><strong>Lý do:</strong> Các từ khóa liên quan đến đau đầu, chóng mặt và rối loạn giấc ngủ được hệ thống nhận diện.</p><div class="callout" style="margin-top:15px"><b style="color:#9a6b08">Lưu ý:</b><p>Kết quả chỉ mang tính tham khảo, không thay thế chẩn đoán y khoa chính thức.</p></div></div></div>
+  <div class="footer"><span>Điểm nhấn đổi mới của đề tài</span><span>07 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">07 · Dữ liệu</span><h2>Mô hình dữ liệu phục vụ vận hành</h2>
+  <div class="grid grid-3" style="margin-top:22px"><div class="card"><h3>User & Role</h3><p>Thông tin tài khoản, hồ sơ bệnh nhân, bác sĩ và vai trò PATIENT / DOCTOR / ADMIN.</p><div class="pillrow"><span class="pill">JWT</span><span class="pill">Profile</span><span class="pill">RBAC</span></div></div><div class="card"><h3>Doctor & Schedule</h3><p>Bác sĩ gắn với chuyên khoa, lịch tuần cố định và các khoảng thời gian bận đột xuất.</p><div class="pillrow"><span class="pill">Specialty</span><span class="pill">Schedule</span><span class="pill">Block</span></div></div><div class="card"><h3>Appointment & Review</h3><p>Lịch hẹn liên kết bệnh nhân, bác sĩ, trạng thái, ghi chú và đánh giá sau khám.</p><div class="pillrow"><span class="pill">Status</span><span class="pill">Notes</span><span class="pill">Rating</span></div></div></div>
+  <div class="arch" style="margin-top:30px"><div class="node"><b>User</b><small>1 — 1 DoctorProfile</small></div><div class="arrow">↔</div><div class="node"><b>DoctorProfile</b><small>1 — N Schedule / Block</small></div><div class="arrow">↔</div><div class="node"><b>Appointment</b><small>1 — 1 Review</small></div><div class="arrow">↔</div><div class="node"><b>User</b><small>Patient relation</small></div></div>
+  <div class="callout" style="margin-top:27px"><h3>Điểm kiểm soát quan trọng</h3><p>UUID cho định danh, unique email/mã lịch, index theo bác sĩ và ngày, transaction khi tạo hồ sơ bác sĩ hoặc cập nhật đánh giá.</p></div>
+  <div class="footer"><span>Mô hình dữ liệu và tính nhất quán</span><span>08 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">08 · Bảo mật & kiểm thử</span><h2>Độ tin cậy được xây từ nhiều lớp</h2>
+  <div class="grid grid-2" style="margin-top:23px"><div class="card"><div class="icon">盾</div><h3>Bảo mật và phân quyền</h3><ul class="checklist"><li>Mật khẩu được hash bằng bcrypt.</li><li>JWT kiểm tra token trước tài nguyên riêng tư.</li><li>Role middleware giới hạn API theo vai trò.</li><li>Kiểm tra quyền sở hữu lịch trước cập nhật/hủy.</li><li>Yup validation cho body, params và query.</li></ul></div><div class="card"><div class="icon">✓</div><h3>Kiểm thử nghiệp vụ</h3><ul class="checklist"><li>Kiểm tra chuyển trạng thái lịch hợp lệ.</li><li>Kiểm tra đặt trùng khung giờ.</li><li>Kiểm tra điều kiện hủy trước 2 tiếng.</li><li>Kiểm tra slot bị đặt và slot bị chặn.</li><li>Build TypeScript frontend/backend trước bàn giao.</li></ul></div></div>
+  <div class="grid grid-4" style="margin-top:25px"><div class="metric"><b>401</b><span>chưa xác thực</span></div><div class="metric"><b>403</b><span>không đủ quyền</span></div><div class="metric"><b>400</b><span>dữ liệu không hợp lệ</span></div><div class="metric"><b>404</b><span>tài nguyên không tồn tại</span></div></div>
+  <div class="footer"><span>An toàn, kiểm thử và khả năng bảo trì</span><span>09 / 10</span></div>
+</section>
+
+<section class="page">
+  <span class="kicker">09 · Kết luận</span><h2>Giá trị đạt được và hướng phát triển</h2>
+  <div class="grid grid-2" style="margin-top:20px"><div class="card"><h3>Kết quả đạt được</h3><ul class="checklist"><li>Xây dựng được hệ thống đặt lịch khám end-to-end.</li><li>Đáp ứng ba vai trò và các quyền nghiệp vụ chính.</li><li>Quản lý lịch tuần, lịch bận và trạng thái lịch hẹn.</li><li>Tích hợp AI hỗ trợ định hướng chuyên khoa.</li><li>Giao diện responsive, tập trung vào thao tác thực tế.</li></ul></div><div class="card"><h3>Hướng phát triển</h3><ul class="checklist"><li>Thông báo email/SMS/push cho các mốc lịch hẹn.</li><li>Tích hợp thanh toán và xuất hóa đơn.</li><li>Telemedicine và lưu hồ sơ khám chuyên sâu.</li><li>Dashboard phân tích doanh thu, tỷ lệ hủy và tải bác sĩ.</li><li>Mở rộng kiểm thử tự động và triển khai cloud.</li></ul></div></div>
+  <div class="quote" style="margin-top:25px;text-align:center;font-size:19px">MedCare biến một cuộc gọi đặt lịch thành một hành trình chăm sóc sức khỏe có cấu trúc.</div>
+  <div style="text-align:center;margin-top:28px"><h1 style="font-size:34px;color:var(--teal)">Xin cảm ơn Hội đồng</h1><p class="lead" style="margin:0 auto">Kính mời Hội đồng đặt câu hỏi và góp ý.</p></div>
+  <div class="footer"><span>MEDCARE · THUYẾT TRÌNH KHÓA LUẬN</span><span>10 / 10</span></div>
+</section>
+</body>
+</html>
